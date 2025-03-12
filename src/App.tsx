@@ -5,6 +5,7 @@ import './App.scss';
 type State = {
   today: object;
   clockName: string;
+  hasClock: boolean;
 };
 
 function getRandomName(): string {
@@ -17,21 +18,48 @@ export class App extends React.Component<{}, State> {
   state: State = {
     today: new Date(),
     clockName: 'Clock-0',
+    hasClock: false,
   };
 
   // This code starts a timer
-  timerId: number | null = window.setInterval(() => {
+
+  timerId: number | undefined;
+
+  componentDidUnmount(): void {
+    this.timerId = window.setInterval(() => {
+      this.setState({
+        today: new Date(),
+        clockName: getRandomName(),
+        hasClock: true,
+      });
+
+      // eslint-disable-next-line no-console
+      console.log(this.state.today);
+    }, 3300);
+
+    document.addEventListener('contextmenu', (event: MouseEvent) => {
+      event.preventDefault(); // not to show the context menu
+    });
+
+    document.addEventListener('click', () => {});
+  }
+
+  // this code stops the timer
+  componentWillUnmount(): void {
+    window.clearInterval(this.timerId);
+
     this.setState({
       today: new Date(),
       clockName: getRandomName(),
+      hasClock: true,
     });
-  }, 3300);
 
-  // this code stops the timer
+    document.removeEventListener('contextmenu', (event: MouseEvent) => {
+      event.preventDefault();
+    });
 
-  (window as Window).clearInterval(timerId);
-
-  // window.clearInterval(timerId);
+    document.removeEventListener('click', () => {});
+  }
 
   render() {
     return (
@@ -39,15 +67,15 @@ export class App extends React.Component<{}, State> {
         <h1>React clock</h1>
 
         <div className="Clock">
-          <strong className="Clock__name">{clockName}</strong>
+          <strong className="Clock__name">{this.state.clockName}</strong>
 
           {' time is '}
 
           <span className="Clock__time">
-            {today.toUTCString().slice(-12, -4)}
+            {String(this.state.today).toUTCString().slice(-12, -4)}
           </span>
         </div>
       </div>
     );
   }
-};
+}
