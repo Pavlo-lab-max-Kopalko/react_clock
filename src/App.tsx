@@ -72,7 +72,7 @@ export class App extends React.Component<{}, State> {
           {' time is '}
 
           <span className="Clock__time">
-            {String(this.state.today).toUTCString().slice(-12, -4)}
+            {String(this.state.today).toString().slice(-12, -4)}
           </span>
         </div>
       </div>
