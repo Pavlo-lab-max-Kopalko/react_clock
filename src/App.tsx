@@ -2,6 +2,8 @@ import React from 'react';
 import './App.scss';
 // import { render } from 'react-dom';
 
+import { Clock } from './components/Clock';
+
 type State = {
   today: Date;
   clockName: string;
@@ -85,18 +87,17 @@ export class App extends React.Component<{}, State> {
       <div className="App">
         <h1>React clock</h1>
 
-        <div className="Clock">
-          <strong className="Clock__name">
-            {this.state.hasClock && this.state.clockName}
-          </strong>
+        {this.state.hasClock && (
+          <div className="Clock">
+            <Clock name={this.state.clockName} />
 
-          {this.state.hasClock && ' time is '}
+            {' time is '}
 
-          <span className="Clock__time">
-            {this.state.hasClock &&
-              this.state.today.toUTCString().slice(-12, -4)}
-          </span>
-        </div>
+            <span className="Clock__time">
+              {this.state.today.toUTCString().slice(-12, -4)}
+            </span>
+          </div>
+        )}
       </div>
     );
   }
