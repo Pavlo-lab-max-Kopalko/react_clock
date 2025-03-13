@@ -35,8 +35,6 @@ export class App extends React.Component<{}, State> {
     event.preventDefault();
 
     this.setState({ hasClock: true });
-
-    console.log(this.state.hasClock);
   };
 
   componentDidMount(): void {
@@ -44,7 +42,6 @@ export class App extends React.Component<{}, State> {
       this.setState({
         today: new Date(),
         clockName: getRandomName(),
-        hasClock: true,
       });
 
       console.warn(this.state.clockName);
@@ -87,17 +84,7 @@ export class App extends React.Component<{}, State> {
       <div className="App">
         <h1>React clock</h1>
 
-        {this.state.hasClock && (
-          <div className="Clock">
-            <Clock name={this.state.clockName} />
-
-            {' time is '}
-
-            <span className="Clock__time">
-              {this.state.today.toUTCString().slice(-12, -4)}
-            </span>
-          </div>
-        )}
+        {this.state.hasClock && <Clock name={this.state.clockName} />}
       </div>
     );
   }
